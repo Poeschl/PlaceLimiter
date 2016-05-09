@@ -1,0 +1,14 @@
+name: ${name}
+main: de.poeschl.bukkit.placelimiter.PlaceLimiterPlugin
+version: ${version}
+commands:
+   plreload:
+      description: Reloads the plugin config.
+      usage: /plreload
+permissions:
+   placelimiter.reload:
+        description: Reloads the plugin config.
+        default: op
+   placelimiter.override:
+        description: Except the player from any limits
+        default: op

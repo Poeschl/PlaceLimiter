@@ -1,0 +1,5 @@
+noPermissionMessage: '&4You have no permission to use that command.'
+limitPlaceReachedMessage: '&4You reached the limit of placing down %s.'
+notPlacedFromThisPlayer: '&4You havent placed this %s.'
+placeRules:
+  - STONE: 2

@@ -67,9 +67,22 @@ public class BlockPlacingListener implements Listener {
                     logger.info(event.getPlayer().getName() + " removed " + currentBlock.toString());
                     placementManager.savePlayer(currentPlayer);
                 } else {
-                    event.setCancelled(true);
-                    String message = String.format(settingManager.getNotFromPlayerPlacedMessage(), currentBlock.toString());
-                    event.getPlayer().sendMessage(message);
+                    boolean knownLocation = false;
+
+                    for (Player player : placementManager.getAllPlayers()) {
+                        if (player.isBreakLocationValid(blockLocation)) {
+                            knownLocation = true;
+                            break;
+                        }
+                    }
+
+                    if (knownLocation) {
+                        event.setCancelled(true);
+                        String message = String.format(settingManager.getNotFromPlayerPlacedMessage(), currentBlock.toString());
+                        event.getPlayer().sendMessage(message);
+                    } else {
+                        logger.info(event.getPlayer().getName() + " removed " + currentBlock.toString() + "on unknown location.");
+                    }
                 }
             } else {
                 for (Player player : placementManager.getAllPlayers()) {

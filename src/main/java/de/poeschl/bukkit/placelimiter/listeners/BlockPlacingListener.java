@@ -12,13 +12,17 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.logging.Logger;
+
 public class BlockPlacingListener implements Listener {
 
+    private Logger logger;
     private JavaPlugin plugin;
     private SettingManager settingManager;
     private PlacementManager placementManager;
 
     public BlockPlacingListener(JavaPlugin plugin, SettingManager settingManager, PlacementManager placementManager) {
+        this.logger = plugin.getLogger();
         this.plugin = plugin;
         this.settingManager = settingManager;
         this.placementManager = placementManager;
@@ -28,18 +32,23 @@ public class BlockPlacingListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         Block currentBlock = new Block(event.getBlock().getType(), event.getBlock().getData());
 
-        if (settingManager.isMaterialLimited(currentBlock) && !event.getPlayer().hasPermission(PermissionManager.PERMISSION_KEY_LIMIT_OVERRIDE)) {
-            Player currentPlayer = placementManager.getPlayer(event.getPlayer().getUniqueId());
-            int alreadyPlaced = currentPlayer.getPlacementOfMaterial(currentBlock);
-            int limit = settingManager.getMaterialLimit(currentBlock);
+        if (settingManager.isMaterialLimited(currentBlock)) {
+            if (!event.getPlayer().hasPermission(PermissionManager.PERMISSION_KEY_LIMIT_OVERRIDE)) {
+                Player currentPlayer = placementManager.getPlayer(event.getPlayer().getUniqueId());
+                int alreadyPlaced = currentPlayer.getPlacementOfMaterial(currentBlock);
+                int limit = settingManager.getMaterialLimit(currentBlock);
 
-            if (alreadyPlaced < limit) {
-                currentPlayer.increasePlacement(currentBlock, event.getBlock().getLocation());
-                placementManager.savePlayer(currentPlayer);
+                if (alreadyPlaced < limit) {
+                    currentPlayer.increasePlacement(currentBlock, event.getBlock().getLocation());
+                    logger.info(event.getPlayer().getName() + " placed down " + currentBlock.toString());
+                    placementManager.savePlayer(currentPlayer);
+                } else {
+                    event.setCancelled(true);
+                    String message = String.format(settingManager.getLimitPlaceReachedMessage(), currentBlock.toString());
+                    event.getPlayer().sendMessage(message);
+                }
             } else {
-                event.setCancelled(true);
-                String message = String.format(settingManager.getLimitPlaceReachedMessage(), currentBlock.getMaterial().name() + ":" + currentBlock.getData());
-                event.getPlayer().sendMessage(message);
+                logger.info(event.getPlayer().getName() + " placed down " + currentBlock.toString() + " with Override");
             }
         }
     }
@@ -50,16 +59,16 @@ public class BlockPlacingListener implements Listener {
         Location blockLocation = event.getBlock().getLocation();
 
         if (settingManager.isMaterialLimited(currentBlock)) {
-
             if (!event.getPlayer().hasPermission(PermissionManager.PERMISSION_KEY_LIMIT_OVERRIDE)) {
                 Player currentPlayer = placementManager.getPlayer(event.getPlayer().getUniqueId());
 
                 if (currentPlayer.isBreakLocationValid(blockLocation)) {
                     currentPlayer.decreasePlacement(currentBlock, blockLocation);
+                    logger.info(event.getPlayer().getName() + " removed " + currentBlock.toString());
                     placementManager.savePlayer(currentPlayer);
                 } else {
                     event.setCancelled(true);
-                    String message = String.format(settingManager.getNotFromPlayerPlacedMessage(), currentBlock.getMaterial().name() + ":" + currentBlock.getData());
+                    String message = String.format(settingManager.getNotFromPlayerPlacedMessage(), currentBlock.toString());
                     event.getPlayer().sendMessage(message);
                 }
             } else {
@@ -69,6 +78,7 @@ public class BlockPlacingListener implements Listener {
                         break;
                     }
                 }
+                logger.info(event.getPlayer().getName() + " removed " + currentBlock.toString() + " with Override");
             }
 
         }

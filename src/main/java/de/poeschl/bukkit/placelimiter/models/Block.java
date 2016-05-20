@@ -5,7 +5,7 @@ import org.bukkit.Material;
 
 public class Block {
     private Material material;
-    private byte data;
+    private byte data = -1;
 
     public Block(Material material) {
         this(material, (byte) -1);
@@ -42,5 +42,14 @@ public class Block {
         int result = material != null ? material.hashCode() : 0;
         result = 31 * result + (int) data;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        String blockName = material.name();
+        if (data != -1) {
+            blockName += ":" + data;
+        }
+        return blockName;
     }
 }

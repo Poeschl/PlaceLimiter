@@ -57,6 +57,7 @@ public class PlacementManager {
             BufferedSink fileSink = Okio.buffer(Okio.sink(placementFile));
             jsonAdapter.toJson(fileSink, placements);
             fileSink.flush();
+            logger.info("Saved placements");
         } catch (IOException ex) {
             logger.warning("Error on writing the placement file!");
         }
@@ -67,6 +68,7 @@ public class PlacementManager {
             try {
                 BufferedSource fileSource = Okio.buffer(Okio.source(placementFile));
                 placements = jsonAdapter.fromJson(fileSource);
+                logger.info("Loaded placements");
             } catch (IOException ex) {
                 logger.warning("Error on reading the placement file!");
             }

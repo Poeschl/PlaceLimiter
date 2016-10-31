@@ -1,6 +1,6 @@
-name: ${name}
+name: @name@
 main: de.poeschl.bukkit.placelimiter.PlaceLimiterPlugin
-version: ${version}
+version: @version@
 commands:
    plreload:
       description: Reloads the plugin config.

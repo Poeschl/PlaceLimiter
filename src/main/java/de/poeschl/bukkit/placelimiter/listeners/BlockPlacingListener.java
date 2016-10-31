@@ -17,13 +17,11 @@ import java.util.logging.Logger;
 public class BlockPlacingListener implements Listener {
 
     private Logger logger;
-    private JavaPlugin plugin;
     private SettingManager settingManager;
     private PlacementManager placementManager;
 
     public BlockPlacingListener(JavaPlugin plugin, SettingManager settingManager, PlacementManager placementManager) {
         this.logger = plugin.getLogger();
-        this.plugin = plugin;
         this.settingManager = settingManager;
         this.placementManager = placementManager;
     }

@@ -10,7 +10,7 @@ limitPlaceReachedMessage: '&4You reached the limit of placing down %s.'
 notPlacedFromThisPlayer: '&4You havent placed this %s.'
 placeRules:
   - STONE: 2
-  - "DIRT:0": 1
+  - 'DIRT:0': 1
 ```
 
 The settings ``noPermissionMessage``, ``limitPlaceReachedMessage``, ``notPlacedFromThisPlayer`` are the messages the player gets displayed for the following reasons:

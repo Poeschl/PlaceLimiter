@@ -88,6 +88,7 @@ public class BlockPlacingListener implements Listener {
                 for (Player player : placementManager.getAllPlayers()) {
                     if (player.isBreakLocationValid(blockLocation)) {
                         player.decreasePlacement(currentBlock, blockLocation);
+                        placementManager.savePlayer(player);
                         break;
                     }
                 }

@@ -10,7 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
 
@@ -20,15 +19,16 @@ public class BlockPlacingListener implements Listener {
     private SettingManager settingManager;
     private PlacementManager placementManager;
 
-    public BlockPlacingListener(JavaPlugin plugin, SettingManager settingManager, PlacementManager placementManager) {
-        this.logger = plugin.getLogger();
+    public BlockPlacingListener(Logger logger, SettingManager settingManager, PlacementManager placementManager) {
+        this.logger = logger;
         this.settingManager = settingManager;
         this.placementManager = placementManager;
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        Block currentBlock = new Block(event.getBlock().getType(), event.getBlock().getData());
+        @SuppressWarnings("deprecation")
+        Block currentBlock = new Block(event.getBlockPlaced().getType(), event.getBlockPlaced().getData());
 
         if (settingManager.isMaterialLimited(currentBlock)) {
             if (!event.getPlayer().hasPermission(PermissionManager.PERMISSION_KEY_LIMIT_OVERRIDE)) {
@@ -37,7 +37,7 @@ public class BlockPlacingListener implements Listener {
                 int limit = settingManager.getMaterialLimit(currentBlock);
 
                 if (alreadyPlaced < limit) {
-                    currentPlayer.increasePlacement(currentBlock, event.getBlock().getLocation());
+                    currentPlayer.increasePlacement(currentBlock, event.getBlockPlaced().getLocation());
                     logger.info(event.getPlayer().getName() + " placed down " + currentBlock.toString());
                     placementManager.savePlayer(currentPlayer);
                 } else {

@@ -1,9 +1,10 @@
-package de.poeschl.bukkit.placelimiter
+package de.poeschl.bukkit.placelimiter.commands
 
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.never
+import com.nhaarman.mockito_kotlin.times
 import com.nhaarman.mockito_kotlin.verify
-import de.poeschl.bukkit.placelimiter.commands.ReloadConfigCommand
+import de.poeschl.bukkit.placelimiter.PlaceLimiterPlugin
 import de.poeschl.bukkit.placelimiter.managers.PermissionManager
 import de.poeschl.bukkit.placelimiter.managers.SettingManager
 import de.poeschl.bukkit.placelimiter.utils.InstanceFactory
@@ -32,7 +33,7 @@ class ReloadConfigCommandTest {
 
         commandHandler.onCommand(mockCommandSender, mockCommand, "", emptyArray())
 
-        verify(mockPlugin, com.nhaarman.mockito_kotlin.times(1)).reload()
+        verify(mockPlugin, times(1)).reload()
         verify(mockCommandSender).sendMessage("Configuration reloaded")
         verify(mockCommandSender, never()).sendMessage(noPermissionText)
     }

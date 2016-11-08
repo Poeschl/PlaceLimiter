@@ -1,9 +1,9 @@
 package de.poeschl.bukkit.placelimiter;
 
-import de.poeschl.bukkit.placelimiter.commands.ReloadConfigCommand;
 import de.poeschl.bukkit.placelimiter.listeners.BlockPlacingListener;
 import de.poeschl.bukkit.placelimiter.managers.PlacementManager;
 import de.poeschl.bukkit.placelimiter.managers.SettingManager;
+import de.poeschl.bukkit.placelimiter.utils.InstanceFactory;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -16,6 +16,7 @@ public class PlaceLimiterPlugin extends JavaPlugin {
     public void onEnable() {
         super.onEnable();
         PluginDescriptionFile pdfFile = this.getDescription();
+        InstanceFactory instanceFactory = new InstanceFactory();
 
         if (getConfig().getKeys(false).size() == 0) {
             getConfig();
@@ -25,7 +26,7 @@ public class PlaceLimiterPlugin extends JavaPlugin {
         placementManager = new PlacementManager(this);
         placementManager.load();
 
-        getCommand("plreload").setExecutor(new ReloadConfigCommand(this, settingManager));
+        getCommand("plreload").setExecutor(instanceFactory.createReloadConfigCommand(this, settingManager));
         getServer().getPluginManager().registerEvents(new BlockPlacingListener(this, settingManager, placementManager), this);
 
         getLogger().info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");

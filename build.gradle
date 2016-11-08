@@ -80,8 +80,8 @@ dependencies {
     compileOnly 'org.bukkit:bukkit:1.7.9-R0.2'
     compile 'com.squareup.moshi:moshi:1.1.0'
     compile 'com.squareup.okio:okio:1.8.0'
-    compile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.4'
 
+    testCompile 'org.jetbrains.kotlin:kotlin-stdlib:1.0.4'
     testCompile 'org.bukkit:bukkit:1.7.9-R0.2'
     testCompile 'junit:junit:4.12'
     testCompile 'org.mockito:mockito-core:2.2.13'

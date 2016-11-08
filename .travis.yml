@@ -13,3 +13,14 @@ before_install:
 
 script:
   - ./gradlew check jacocoTestReport coveralls
+
+before_deploy:
+  - ./gradlew shadowJar
+
+deploy:
+  provider: releases
+  api_key: ${GH_TOKEN}
+  file: libs/PlaceLimiter-*.jar
+  skip_cleanup: true
+  on:
+    tags: true

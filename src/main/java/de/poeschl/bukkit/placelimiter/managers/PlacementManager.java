@@ -10,7 +10,6 @@ import de.poeschl.bukkit.placelimiter.utils.WorldJsonAdapter;
 import okio.BufferedSink;
 import okio.BufferedSource;
 import okio.Okio;
-import org.bukkit.plugin.Plugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,10 +26,10 @@ public class PlacementManager {
     private PlacementList placements;
     private JsonAdapter<PlacementList> jsonAdapter;
 
-    public PlacementManager(Plugin plugin) {
-        logger = plugin.getLogger();
-        placements = new PlacementList();
-        placementFile = new File(plugin.getDataFolder(), PLACEMENTS_FILE_NAME);
+    public PlacementManager(Logger logger, File dataFolder, PlacementList placementList) {
+        this.logger = logger;
+        this.placements = placementList;
+        this.placementFile = new File(dataFolder, PLACEMENTS_FILE_NAME);
 
         Moshi moshi = new Moshi.Builder().add(new PlayerJsonAdapter())
                 .add(new HashMapStringIntAdapter())

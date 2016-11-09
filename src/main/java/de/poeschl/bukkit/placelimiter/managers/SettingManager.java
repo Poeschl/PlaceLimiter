@@ -3,10 +3,11 @@ package de.poeschl.bukkit.placelimiter.managers;
 import de.poeschl.bukkit.placelimiter.models.Block;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 
@@ -63,6 +64,7 @@ public class SettingManager {
         cacheRuleList = new HashMap<>();
         List<?> materialMap = config.getList(PLACE_RULES_KEY);
 
+        logger.info("Detected Restrictions:");
         for (Iterator it = materialMap.iterator(); it.hasNext(); ) {
             HashMap<String, Integer> currentRule = (HashMap<String, Integer>) it.next();
 
@@ -80,6 +82,7 @@ public class SettingManager {
             int limit = currentRule.get(key);
 
             cacheRuleList.put(block, limit);
+            logger.info(block.toString() + " -> " + limit + " times");
         }
     }
 

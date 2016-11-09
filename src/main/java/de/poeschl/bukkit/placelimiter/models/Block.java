@@ -5,10 +5,10 @@ import org.bukkit.Material;
 
 public class Block {
     private Material material;
-    private byte data = -1;
+    private byte data = 0;
 
     public Block(Material material) {
-        this(material, (byte) -1);
+        this(material, (byte) 0);
     }
 
     public Block(Material material, byte data) {
@@ -34,7 +34,7 @@ public class Block {
         if (!material.equals(block.material)) {
             return false;
         }
-        return data == (byte) -1 || data == block.data;
+        return data == block.data;
     }
 
     @Override

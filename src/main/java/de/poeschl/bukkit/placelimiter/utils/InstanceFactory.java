@@ -6,6 +6,7 @@ import de.poeschl.bukkit.placelimiter.listeners.BlockPlacingListener;
 import de.poeschl.bukkit.placelimiter.managers.PlacementManager;
 import de.poeschl.bukkit.placelimiter.managers.SettingManager;
 import de.poeschl.bukkit.placelimiter.models.PlacementList;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.File;
 import java.util.logging.Logger;
@@ -26,5 +27,9 @@ public class InstanceFactory {
 
     public PlacementList createPlacementList() {
         return new PlacementList();
+    }
+
+    public SettingManager createSettingsManager(FileConfiguration config, Logger logger) {
+        return new SettingManager(config, logger);
     }
 }

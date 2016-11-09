@@ -47,7 +47,7 @@ public class Block {
     @Override
     public String toString() {
         String blockName = material.name();
-        if (data != -1) {
+        if (data != 0) {
             blockName += ":" + data;
         }
         return blockName;

@@ -21,7 +21,7 @@ public class PlaceLimiterPlugin extends JavaPlugin {
             getConfig();
             saveDefaultConfig();
         }
-        settingManager = new SettingManager(getConfig(), getLogger());
+        settingManager = instanceFactory.createSettingsManager(getConfig(), getLogger());
         placementManager = instanceFactory.createPlacementManager(getLogger(), getDataFolder(), instanceFactory.createPlacementList());
         placementManager.load();
 

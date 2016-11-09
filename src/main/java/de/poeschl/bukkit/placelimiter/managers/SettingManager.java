@@ -13,10 +13,10 @@ import java.util.logging.Logger;
 
 public class SettingManager {
 
-    private static final String NO_PERMISSION_MESSAGE_KEY = "noPermissionMessage";
-    private static final String LIMIT_PLACE_REACHED_MESSAGE_KEY = "limitPlaceReachedMessage";
-    private static final String NOT_PLACED_FROM_THIS_PLAYER_KEY = "notPlacedFromThisPlayer";
-    private static final String PLACE_RULES_KEY = "placeRules";
+    static final String NO_PERMISSION_MESSAGE_KEY = "noPermissionMessage";
+    static final String LIMIT_PLACE_REACHED_MESSAGE_KEY = "limitPlaceReachedMessage";
+    static final String NOT_PLACED_FROM_THIS_PLAYER_KEY = "notPlacedFromThisPlayer";
+    static final String PLACE_RULES_KEY = "placeRules";
 
     private FileConfiguration config;
     private Logger logger;
@@ -47,11 +47,13 @@ public class SettingManager {
         if (cacheRuleList == null) {
             updateCache();
         }
-
         return cacheRuleList.containsKey(block);
     }
 
     public int getMaterialLimit(Block block) {
+        if (cacheRuleList == null) {
+            updateCache();
+        }
         return cacheRuleList.get(block);
     }
 
@@ -60,7 +62,7 @@ public class SettingManager {
         logger.fine("Cache cleared");
     }
 
-    private void updateCache() {
+    void updateCache() {
         cacheRuleList = new HashMap<>();
         List<?> materialMap = config.getList(PLACE_RULES_KEY);
 

@@ -18,9 +18,10 @@ public class SettingManager {
     static final String NOT_PLACED_FROM_THIS_PLAYER_KEY = "notPlacedFromThisPlayer";
     static final String PLACE_RULES_KEY = "placeRules";
 
+    Map<Block, Integer> cacheRuleList;
+
     private FileConfiguration config;
     private Logger logger;
-    private Map<Block, Integer> cacheRuleList;
 
     public SettingManager(FileConfiguration config, Logger logger) {
         this.config = config;

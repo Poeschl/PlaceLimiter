@@ -135,6 +135,26 @@ class SettingManagerTest {
     }
 
     @Test
+    fun testClearCache() {
+        val stoneBlock = Block(Material.STONE)
+
+        //WHEN
+        val mockConfig: FileConfiguration = mock()
+        val mockLogger: Logger = mock()
+
+        val settingsManager = InstanceFactory().createSettingsManager(mockConfig, mockLogger)
+        val dummyRestrictions = arrayListOf(hashMapOf(Pair(stoneBlock.toString(), 42)))
+        `when`(mockConfig.getList(SettingManager.PLACE_RULES_KEY)).thenReturn(dummyRestrictions)
+
+        //THEN
+        settingsManager.updateCache()
+        settingsManager.clearCache()
+
+        //VERIFY
+        Assertions.assertThat(settingsManager.cacheRuleList).isNull()
+    }
+
+    @Test
     fun testCacheUpdate() {
 
         val stoneBlock = Block(Material.STONE)

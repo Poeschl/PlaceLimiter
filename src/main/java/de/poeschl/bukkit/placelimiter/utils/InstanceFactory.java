@@ -7,11 +7,16 @@ import de.poeschl.bukkit.placelimiter.managers.PlacementManager;
 import de.poeschl.bukkit.placelimiter.managers.SettingManager;
 import de.poeschl.bukkit.placelimiter.models.PlacementList;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.logging.Logger;
 
 public class InstanceFactory {
+
+    public Logger getLogger(JavaPlugin plugin) {
+        return plugin.getLogger();
+    }
 
     public ReloadConfigCommand createReloadConfigCommand(PlaceLimiterPlugin plugin, SettingManager settingsManager) {
         return new ReloadConfigCommand(plugin, settingsManager);

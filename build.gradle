@@ -85,11 +85,10 @@ dependencies {
     testCompile 'org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion'
     testCompile 'org.bukkit:bukkit:1.7.9-R0.2'
     testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.2.13'
-    testCompile 'com.nhaarman:mockito-kotlin:0.11.0'
     testCompile 'org.assertj:assertj-core:3.5.2'
+    testCompile 'org.mockito:mockito-core:2.2.15'
+    testCompile 'com.nhaarman:mockito-kotlin:0.11.0'
+    //TODO: Waiting for mokito 2 support of powermock
 //    testCompile "org.powermock:powermock-module-junit4:$powerMockVersion"
-//    testCompile "org.powermock:powermock-api-mockito:$powerMockVersion"
-//    testCompile "org.powermock:powermock-module-junit4-rule:$powerMockVersion"
-//    testCompile "org.powermock:powermock-classloading-xstream:$powerMockVersion"
+//    testCompile "org.powermock:powermock-api-mockito2:$powerMockVersion"
 }

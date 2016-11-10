@@ -6,7 +6,7 @@ import org.bukkit.World
 import org.junit.Ignore
 import org.junit.Test
 
-//TODO: Utilize powermock to mock the static Bukkit calls
+//TODO: Utilize powermock to mock the static Bukkit calls - Waiting for mokito 2 support of powermock
 class WorldJsonAdapterTest {
 
     @Ignore

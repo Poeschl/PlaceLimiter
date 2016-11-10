@@ -4,6 +4,9 @@ import org.bukkit.Material;
 
 
 public class Block {
+
+    public static final String DATA_ID_DELIMITER = ":";
+
     private Material material;
     private byte data = 0;
 
@@ -48,7 +51,7 @@ public class Block {
     public String toString() {
         String blockName = material.name();
         if (data != 0) {
-            blockName += ":" + data;
+            blockName += DATA_ID_DELIMITER + data;
         }
         return blockName;
     }

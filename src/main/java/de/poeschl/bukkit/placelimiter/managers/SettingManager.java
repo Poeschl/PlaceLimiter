@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import static de.poeschl.bukkit.placelimiter.models.Block.DATA_ID_DELIMITER;
+
 
 public class SettingManager {
 
@@ -73,9 +75,9 @@ public class SettingManager {
 
             Block block;
             String key = currentRule.keySet().toArray(new String[0])[0];
-            if (key.contains(":")) {
-                int data = Integer.valueOf(key.substring(key.indexOf(":") + 1, key.length()));
-                String name = key.substring(0, key.indexOf(":"));
+            if (key.contains(String.valueOf(DATA_ID_DELIMITER))) {
+                int data = Integer.valueOf(key.substring(key.indexOf(DATA_ID_DELIMITER) + 1, key.length()));
+                String name = key.substring(0, key.indexOf(DATA_ID_DELIMITER));
 
                 block = new Block(Material.getMaterial(name), (byte) data);
             } else {

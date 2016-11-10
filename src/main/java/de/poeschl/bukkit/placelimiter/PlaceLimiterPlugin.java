@@ -13,7 +13,9 @@ public class PlaceLimiterPlugin extends JavaPlugin {
 
     protected SettingManager settingManager;
     protected PlacementManager placementManager;
+
     private Logger logger;
+    private String pluginName;
 
     @Override
     public void onEnable() {
@@ -33,8 +35,8 @@ public class PlaceLimiterPlugin extends JavaPlugin {
 
         getCommand("plreload").setExecutor(instanceFactory.createReloadConfigCommand(this, settingManager));
         getBukkitServer().getPluginManager().registerEvents(instanceFactory.createBlockPlacingListener(logger, settingManager, placementManager), this);
-
-        logger.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
+        pluginName = pdfFile.getName() + " version " + pdfFile.getVersion();
+        logger.info(pluginName + " is enabled!");
     }
 
     @Override
@@ -42,7 +44,7 @@ public class PlaceLimiterPlugin extends JavaPlugin {
         super.onDisable();
         placementManager.save();
         PluginDescriptionFile pdfFile = this.getDescription();
-        logger.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled!");
+        logger.info(pluginName + " is disabled!");
     }
 
     public void reload() {

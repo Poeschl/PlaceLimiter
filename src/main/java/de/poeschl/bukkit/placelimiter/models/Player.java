@@ -1,7 +1,6 @@
 package de.poeschl.bukkit.placelimiter.models;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -70,12 +69,12 @@ public class Player {
 
         Player player = (Player) o;
 
-        return uuid != null ? uuid.equals(player.uuid) : player.uuid == null;
+        return uuid.equals(player.uuid);
 
     }
 
     @Override
     public int hashCode() {
-        return uuid != null ? uuid.hashCode() : 0;
+        return uuid.hashCode();
     }
 }

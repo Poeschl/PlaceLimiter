@@ -53,6 +53,7 @@ public class BlockPlacingListener implements Listener {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
+        @SuppressWarnings("deprecation")
         Block currentBlock = new Block(event.getBlock().getType(), event.getBlock().getData());
         Location blockLocation = event.getBlock().getLocation();
 

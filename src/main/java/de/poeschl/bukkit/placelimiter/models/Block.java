@@ -4,11 +4,14 @@ import org.bukkit.Material;
 
 
 public class Block {
+
+    public static final String DATA_ID_DELIMITER = ":";
+
     private Material material;
-    private byte data = -1;
+    private byte data = 0;
 
     public Block(Material material) {
-        this(material, (byte) -1);
+        this(material, (byte) 0);
     }
 
     public Block(Material material, byte data) {
@@ -34,7 +37,7 @@ public class Block {
         if (!material.equals(block.material)) {
             return false;
         }
-        return data == (byte) -1 || data == block.data;
+        return data == block.data;
     }
 
     @Override
@@ -47,8 +50,8 @@ public class Block {
     @Override
     public String toString() {
         String blockName = material.name();
-        if (data != -1) {
-            blockName += ":" + data;
+        if (data != 0) {
+            blockName += DATA_ID_DELIMITER + data;
         }
         return blockName;
     }

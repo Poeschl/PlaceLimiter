@@ -8,13 +8,13 @@ import org.bukkit.World;
 public class WorldJsonAdapter {
 
     @FromJson
-    World playerFromJson(String worldString) {
+    World worldFromJson(String worldString) {
         World world = Bukkit.getServer().getWorld(worldString);
         return world;
     }
 
     @ToJson
-    String playerToJson(World world) {
+    String worldToJson(World world) {
         return world.getName();
     }
 }

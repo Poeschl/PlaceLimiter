@@ -3,23 +3,27 @@ package de.poeschl.bukkit.placelimiter.managers;
 import de.poeschl.bukkit.placelimiter.models.Block;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
+
+import static de.poeschl.bukkit.placelimiter.models.Block.DATA_ID_DELIMITER;
 
 
 public class SettingManager {
 
-    private static final String NO_PERMISSION_MESSAGE_KEY = "noPermissionMessage";
-    private static final String LIMIT_PLACE_REACHED_MESSAGE_KEY = "limitPlaceReachedMessage";
-    private static final String NOT_PLACED_FROM_THIS_PLAYER_KEY = "notPlacedFromThisPlayer";
-    private static final String PLACE_RULES_KEY = "placeRules";
+    static final String NO_PERMISSION_MESSAGE_KEY = "noPermissionMessage";
+    static final String LIMIT_PLACE_REACHED_MESSAGE_KEY = "limitPlaceReachedMessage";
+    static final String NOT_PLACED_FROM_THIS_PLAYER_KEY = "notPlacedFromThisPlayer";
+    static final String PLACE_RULES_KEY = "placeRules";
+
+    Map<Block, Integer> cacheRuleList;
 
     private FileConfiguration config;
     private Logger logger;
-    private Map<Block, Integer> cacheRuleList;
 
     public SettingManager(FileConfiguration config, Logger logger) {
         this.config = config;
@@ -46,11 +50,13 @@ public class SettingManager {
         if (cacheRuleList == null) {
             updateCache();
         }
-
         return cacheRuleList.containsKey(block);
     }
 
     public int getMaterialLimit(Block block) {
+        if (cacheRuleList == null) {
+            updateCache();
+        }
         return cacheRuleList.get(block);
     }
 
@@ -59,18 +65,19 @@ public class SettingManager {
         logger.fine("Cache cleared");
     }
 
-    private void updateCache() {
+    void updateCache() {
         cacheRuleList = new HashMap<>();
         List<?> materialMap = config.getList(PLACE_RULES_KEY);
 
+        logger.info("Detected Restrictions:");
         for (Iterator it = materialMap.iterator(); it.hasNext(); ) {
             HashMap<String, Integer> currentRule = (HashMap<String, Integer>) it.next();
 
             Block block;
             String key = currentRule.keySet().toArray(new String[0])[0];
-            if (key.contains(":")) {
-                int data = Integer.valueOf(key.substring(key.indexOf(":") + 1, key.length()));
-                String name = key.substring(0, key.indexOf(":"));
+            if (key.contains(String.valueOf(DATA_ID_DELIMITER))) {
+                int data = Integer.valueOf(key.substring(key.indexOf(DATA_ID_DELIMITER) + 1, key.length()));
+                String name = key.substring(0, key.indexOf(DATA_ID_DELIMITER));
 
                 block = new Block(Material.getMaterial(name), (byte) data);
             } else {
@@ -80,6 +87,7 @@ public class SettingManager {
             int limit = currentRule.get(key);
 
             cacheRuleList.put(block, limit);
+            logger.info(block.toString() + " -> " + limit + " times");
         }
     }
 

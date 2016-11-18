@@ -19,7 +19,8 @@ The settings ``noPermissionMessage``, ``limitPlaceReachedMessage``, ``notPlacedF
 + He/She tries to destroy a block which was not build by him-/herself
 
 ``placeRules`` contains the placement rules with following syntax: ``<MaterialName>[:<data>]:<allowed placement count>``
-In the sample configuration above, a player is allowed to place 2 Stone blocks and 1 Dirtblock with the data-id 0. And all other blocks are unlimited.
+In the sample configuration above, a player is allowed to place 2 Stone blocks (any dataid) and 1 Dirt block with the data-id 0. And all other blocks are unlimited.
+Remember to put the block into ``' '`` when you specify any dataid, or just put them around every block to be sure. The plugin will list every restricted block it detected after the placement or removal of the first restricted block after a server restart.
 
 ##Commands
 

@@ -135,6 +135,28 @@ class SettingManagerTest {
     }
 
     @Test
+    fun testGetLimitedBlock() {
+
+        val limitedBlock = Block(Material.DIRT)
+        val placedBlock = Block(Material.DIRT, 2)
+
+        //WHEN
+        val mockConfig: FileConfiguration = mock()
+        val mockLogger: Logger = mock()
+
+        val settingsManager = InstanceFactory().createSettingsManager(mockConfig, mockLogger)
+        val dummyRestrictions = arrayListOf(hashMapOf(Pair(limitedBlock.toString(), 1)))
+        `when`(mockConfig.getList(SettingManager.PLACE_RULES_KEY)).thenReturn(dummyRestrictions)
+
+        //THEN
+        val resultLimitedBlock = settingsManager.getRestrictedBlockOf(placedBlock)
+
+        //VERIFY
+        Assertions.assertThat(resultLimitedBlock).isEqualTo(limitedBlock)
+        Assertions.assertThat(resultLimitedBlock.data).isEqualTo(limitedBlock.data)
+    }
+
+    @Test
     fun testClearCache() {
         val stoneBlock = Block(Material.STONE)
 
@@ -152,6 +174,7 @@ class SettingManagerTest {
 
         //VERIFY
         Assertions.assertThat(settingsManager.cacheRuleList).isNull()
+        Assertions.assertThat(settingsManager.cacheLimitedBlocks).isNull()
     }
 
     @Test

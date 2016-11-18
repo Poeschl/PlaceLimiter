@@ -31,22 +31,24 @@ public class BlockPlacingListener implements Listener {
         Block currentBlock = new Block(event.getBlockPlaced().getType(), event.getBlockPlaced().getData());
 
         if (settingManager.isMaterialLimited(currentBlock)) {
+            Block pureRestrictedBlock = settingManager.getRestrictedBlockOf(currentBlock);
+
             if (!event.getPlayer().hasPermission(PermissionManager.PERMISSION_KEY_LIMIT_OVERRIDE)) {
                 Player currentPlayer = placementManager.getPlayer(event.getPlayer().getUniqueId());
                 int alreadyPlaced = currentPlayer.getPlacementOfMaterial(currentBlock);
                 int limit = settingManager.getMaterialLimit(currentBlock);
 
                 if (alreadyPlaced < limit) {
-                    currentPlayer.increasePlacement(currentBlock, event.getBlockPlaced().getLocation());
-                    logger.info(event.getPlayer().getName() + " placed down " + currentBlock.toString());
+                    currentPlayer.increasePlacement(pureRestrictedBlock, event.getBlockPlaced().getLocation());
+                    logger.info(event.getPlayer().getName() + " placed down " + pureRestrictedBlock.toString());
                     placementManager.savePlayer(currentPlayer);
                 } else {
                     event.setCancelled(true);
-                    String message = String.format(settingManager.getLimitPlaceReachedMessage(), currentBlock.toString());
+                    String message = String.format(settingManager.getLimitPlaceReachedMessage(), pureRestrictedBlock.toString());
                     event.getPlayer().sendMessage(message);
                 }
             } else {
-                logger.info(event.getPlayer().getName() + " placed down " + currentBlock.toString() + " with Override");
+                logger.info(event.getPlayer().getName() + " placed down " + pureRestrictedBlock.toString() + " with Override");
             }
         }
     }
@@ -58,12 +60,14 @@ public class BlockPlacingListener implements Listener {
         Location blockLocation = event.getBlock().getLocation();
 
         if (settingManager.isMaterialLimited(currentBlock)) {
+            Block pureRestrictedBlock = settingManager.getRestrictedBlockOf(currentBlock);
+
             if (!event.getPlayer().hasPermission(PermissionManager.PERMISSION_KEY_LIMIT_OVERRIDE)) {
                 Player currentPlayer = placementManager.getPlayer(event.getPlayer().getUniqueId());
 
                 if (currentPlayer.isBreakLocationValid(blockLocation)) {
-                    currentPlayer.decreasePlacement(currentBlock, blockLocation);
-                    logger.info(event.getPlayer().getName() + " removed " + currentBlock.toString());
+                    currentPlayer.decreasePlacement(pureRestrictedBlock, blockLocation);
+                    logger.info(event.getPlayer().getName() + " removed " + pureRestrictedBlock.toString());
                     placementManager.savePlayer(currentPlayer);
                 } else {
                     boolean knownLocation = false;
@@ -77,21 +81,21 @@ public class BlockPlacingListener implements Listener {
 
                     if (knownLocation) {
                         event.setCancelled(true);
-                        String message = String.format(settingManager.getNotFromPlayerPlacedMessage(), currentBlock.toString());
+                        String message = String.format(settingManager.getNotFromPlayerPlacedMessage(), pureRestrictedBlock.toString());
                         event.getPlayer().sendMessage(message);
                     } else {
-                        logger.info(event.getPlayer().getName() + " removed " + currentBlock.toString() + "on unknown location.");
+                        logger.info(event.getPlayer().getName() + " removed " + pureRestrictedBlock.toString() + "on unknown location.");
                     }
                 }
             } else {
                 for (Player player : placementManager.getAllPlayers()) {
                     if (player.isBreakLocationValid(blockLocation)) {
-                        player.decreasePlacement(currentBlock, blockLocation);
+                        player.decreasePlacement(pureRestrictedBlock, blockLocation);
                         placementManager.savePlayer(player);
                         break;
                     }
                 }
-                logger.info(event.getPlayer().getName() + " removed " + currentBlock.toString() + " with Override");
+                logger.info(event.getPlayer().getName() + " removed " + pureRestrictedBlock.toString() + " with Override");
             }
 
         }

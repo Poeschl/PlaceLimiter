@@ -4,10 +4,7 @@ import de.poeschl.bukkit.placelimiter.models.Block;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 
 import static de.poeschl.bukkit.placelimiter.models.Block.DATA_ID_DELIMITER;
@@ -21,6 +18,7 @@ public class SettingManager {
     static final String PLACE_RULES_KEY = "placeRules";
 
     Map<Block, Integer> cacheRuleList;
+    List<Block> cacheLimitedBlocks;
 
     private FileConfiguration config;
     private Logger logger;
@@ -47,26 +45,41 @@ public class SettingManager {
     }
 
     public boolean isMaterialLimited(Block block) {
-        if (cacheRuleList == null) {
+        if (cacheRuleList == null || cacheLimitedBlocks == null) {
             updateCache();
         }
         return cacheRuleList.containsKey(block);
     }
 
     public int getMaterialLimit(Block block) {
-        if (cacheRuleList == null) {
+        if (cacheRuleList == null || cacheLimitedBlocks == null) {
             updateCache();
         }
         return cacheRuleList.get(block);
     }
 
+    /**
+     * Looks up the exact restricted block for the given block. This is nessesary because sometimes DIRT placement is limited but every DIRT block have an data id like DIRT:1, DIRT:2
+     *
+     * @param block The block to look up
+     * @return the pure limited block
+     */
+    public Block getRestrictedBlockOf(Block block) {
+        if (cacheRuleList == null || cacheLimitedBlocks == null) {
+            updateCache();
+        }
+        return cacheLimitedBlocks.get(cacheLimitedBlocks.indexOf(block));
+    }
+
     public void clearCache() {
         cacheRuleList = null;
+        cacheLimitedBlocks = null;
         logger.fine("Cache cleared");
     }
 
     void updateCache() {
         cacheRuleList = new HashMap<>();
+        cacheLimitedBlocks = new LinkedList<>();
         List<?> materialMap = config.getList(PLACE_RULES_KEY);
 
         logger.info("Detected Restrictions:");
@@ -87,6 +100,7 @@ public class SettingManager {
             int limit = currentRule.get(key);
 
             cacheRuleList.put(block, limit);
+            cacheLimitedBlocks.add(block);
             logger.info(block.toString() + " -> " + limit + " times");
         }
     }

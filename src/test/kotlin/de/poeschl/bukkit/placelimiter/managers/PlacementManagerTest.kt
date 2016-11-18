@@ -118,7 +118,7 @@ class PlacementManagerTest {
         val mockLogger: Logger = mock()
         val player: Player = Player(UUID.fromString("0ffdf1f1-cf9a-4608-86c2-9c8d33da51c2"))
         val placements: PlacementList = InstanceFactory().createPlacementList()
-        val resourcesFolder = File(Thread.currentThread().getContextClassLoader().getResource("placements.json").path).parentFile
+        val resourcesFolder = File(Thread.currentThread().contextClassLoader.getResource("placements.json").path).parentFile
 
         val placementManager: PlacementManager = PlacementManager(mockLogger, resourcesFolder, placements)
 

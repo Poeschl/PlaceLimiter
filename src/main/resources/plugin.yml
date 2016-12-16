@@ -1,5 +1,5 @@
 name: @name@
-main: de.poeschl.bukkit.placelimiter.PlaceLimiterPlugin
+main: io.github.poeschl.bukkit.placelimiter.PlaceLimiterPlugin
 version: @version@
 commands:
    plreload:

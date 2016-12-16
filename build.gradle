@@ -23,7 +23,7 @@ repositories {
     maven { url "http://maven.sk89q.com/repo/" }
 }
 
-group = 'de.poeschl.bukkit'
+group = 'io.github.poeschl.bukkit'
 version = '1.3-SNAPSHOT'
 
 description = """PlaceLimiter"""
